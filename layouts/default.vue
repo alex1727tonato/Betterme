@@ -43,10 +43,13 @@
             <v-icon>mdi-menu</v-icon>
           </v-btn>
         </template>
-        <v-list>
-          <v-list-item href="/login">
+        <v-list class="px-5">
+          <!-- <v-btn outlined flat>
+            <v-icon>mdi-logout-variant</v-icon> {{ 'Cerrar sesión' }}
+          </v-btn> -->
+          <v-list-action style="cursor: pointer" @click="logout">
             <v-list-item-title><v-icon>mdi-logout-variant</v-icon> {{ 'Cerrar sesión' }}</v-list-item-title>
-          </v-list-item>
+          </v-list-action>
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -80,13 +83,19 @@ export default {
         {
           icon: 'mdi-chat-processing-outline',
           title: '¿Quiénes somos?',
-          to: '/abaoutOur'
+          to: '/aboutOur'
         }
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js'
+    }
+  },
+  methods: {
+    async logout () {
+      this.$store.dispatch('session/clientLogout')
+      await this.$router.push('/login')
     }
   }
 }

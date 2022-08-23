@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="image">
+    <v-row class="image" style="heigth: 100vh">
       <v-col class="d-none d-sm-flex justify-center align-center text-center" style="height: 90vh; background: linear-gradient(#245c94, #ba66ca);">
         <div class="img">
           <img src="~/assets/imgs/logo.png" width="650px">
@@ -18,7 +18,7 @@
             ref="form"
             v-model="valid"
             lazy-validation
-            @submit.prevent="onSubmit"
+            @submit.prevent="onLogin"
           >
             <v-text-field
               v-model="email"
@@ -225,6 +225,27 @@ export default Vue.extend({
     }
   },
   methods: {
+    async onLogin () {
+      this.isLoading = true
+      try {
+        const data = {
+          email: this.email,
+          password: this.password
+        }
+        if (this.$refs.form.validate()) {
+          await this.$store.dispatch('session/clientLogin', data)
+          this.$router.replace('/')
+        } else {
+          this.mensaje = 'El correo o contraseña no son validos.'
+          this.snackbar = true
+        }
+      } catch (err) {
+        this.message = err.response ? err.response.data.message : err.message
+        this.snackbar = true
+      } finally {
+        this.isLoading = false
+      }
+    },
     async onSubmit () {
       this.isLoading = true
       try {

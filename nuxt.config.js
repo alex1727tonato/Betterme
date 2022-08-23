@@ -1,6 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
 
-const API = 'https://centralized-api.herokuapp.com'
+const API = 'http://44.206.239.125:3005'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -27,8 +27,18 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '@/plugins/apex.js', ssr: false }
+    { src: '@/plugins/apex.js', ssr: false },
+    { src: '@/plugins/axios.js', mode: 'client' }
+
   ],
+
+  server: {
+    port: process.env.PORT || 3000,
+    host: '0.0.0.0'
+  },
+  router: {
+    middleware: ['auth']
+  },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -44,18 +54,20 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    'cookie-universal-nuxt'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    proxy: true, progress: false
+    proxy: true
   },
 
   proxy: {
     '/api/': {
       target: API,
-      pathRewrite: { '^/api/': '' }
+      pathRewrite: { '^/api/': '' },
+      changeOrigin: true
     }
   },
 
