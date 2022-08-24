@@ -29,12 +29,12 @@
               <div ref="chatContainer" class="chat-container">
                 <div v-for="(message, index) in messages" :key="index" class="message" :class="{own: message.user == username}">
                   <div style="margin-top: 5px" />
-                  <v-app-bar v-if="message.user !== username" color="rgba(0,0,0,0)" flat class="mb-16">
+                  <v-app-bar v-if="message.user !== username" color="rgba(0,0,0,0)" flat class="mb-16" extended>
                     <v-spacer />
-                    <v-card class="mt-10 mr-2" max-width="350px" color="blue" dark>
-                      <v-list-item three-line>
+                    <v-card class="mt-10 mr-2" max-width="750px" color="blue" dark>
+                      <v-list-item three-line style="max-width: 1050px;">
                         <v-list-item-content>
-                          <div class="mb-4">
+                          <div class="mb-4" style="max-width: 750px;">
                             {{ message.content }}
                           </div>
                           <v-list-item-subtitle>
@@ -56,7 +56,14 @@
                       </v-avatar>
                     </v-badge>
                   </v-app-bar>
-                  <v-app-bar v-else color="rgba(0,0,0,0)" class="mb-16" flat>
+                  <v-app-bar
+                    v-else
+                    color="rgba(0,0,0,0)"
+                    class="mb-16"
+                    flat
+                    max-width="700px"
+                    extended
+                  >
                     <v-badge
                       bordered
                       bottom
@@ -72,7 +79,7 @@
                         >
                       </v-avatar>
                     </v-badge>
-                    <v-card class="mt-10 ml-2" max-width="350px">
+                    <v-card class="mt-10 ml-2" max-width="950px">
                       <v-list-item three-line>
                         <v-list-item-content>
                           <div class="mb-4">
@@ -86,6 +93,7 @@
                     </v-card>
                   </v-app-bar>
                 </div>
+                <a name="abajo" />
               </div>
               <div class="typer">
                 <div class="your-input-box">
@@ -123,16 +131,7 @@ export default Vue.extend({
   name: 'AbautPage',
   data () {
     return {
-      messages: [{
-        content: 'HOLA MUNDO',
-        date: '2022/08/22, 8:11:14 am',
-        user: 'Betterme'
-      },
-      {
-        content: 'COMO ESTAS?',
-        date: '2022/08/22, 8:12:14 am',
-        user: 'Alex'
-      }],
+      messages: [],
       username: 'Betterme',
       contentMessage: ''
 
@@ -142,18 +141,49 @@ export default Vue.extend({
     return { title: 'Chat' }
   },
   mounted () {
-    if (this.$route.query.reset) {
-      this.login = false
-    }
+    this.init()
   },
   methods: {
-    sendMessage (value) {
-      this.messages.push({
-        content: value,
-        date: moment().format('YYYY/MM/DD, h:mm:ss a'),
-        user: 'Alex'
-      })
-      this.contentMessage = ''
+    async sendMessage (value) {
+      try {
+        this.messages.push({
+          content: value,
+          date: moment().format('YYYY/MM/DD, h:mm:ss a'),
+          user: 'Usuario'
+        })
+        this.contentMessage = ''
+        window.location.href = '#abajo'
+        const respuesta = await this.$axios.$post('/api/clients/chats', {
+          message: value
+        })
+        this.messages.push({
+          content: respuesta.content,
+          date: moment().format('YYYY/MM/DD, h:mm:ss a'),
+          user: 'Betterme'
+        })
+        window.location.href = '#abajo'
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    async init () {
+      try {
+        const data = await this.$axios.$get('/api/clients/actual-chat')
+        const mensajesHistorial = data?.messages
+        mensajesHistorial.forEach((element) => {
+          this.messages.push(
+            {
+              content: element.content,
+              date: moment(element._date).format('YYYY/MM/DD, h:mm:ss a'),
+              user: element.user ? 'Usuario' : 'Betterme'
+            }
+          )
+        })
+        window.location.href = '#abajo'
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 })

@@ -79,11 +79,6 @@ export default {
           icon: 'mdi-chat-processing-outline',
           title: 'Chat',
           to: '/chat'
-        },
-        {
-          icon: 'mdi-chat-processing-outline',
-          title: '¿Quiénes somos?',
-          to: '/aboutOur'
         }
       ],
       miniVariant: false,
