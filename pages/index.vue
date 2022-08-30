@@ -55,7 +55,7 @@
               </v-row>
             </v-card>
           </div>
-          <div>
+          <div v-if="false">
             <v-card
               class="mx-auto"
               color="#ba66ca"
@@ -73,13 +73,14 @@
           </div>
           <v-card-actions>
             <v-btn
-              class="mt-5"
+              class="primary mt-5"
               outlined
+              dark
               rounded
               text
               to="/chat"
             >
-              Chat
+              Ir a Chat
             </v-btn>
           </v-card-actions>
         </v-card>

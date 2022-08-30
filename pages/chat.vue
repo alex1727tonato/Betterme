@@ -1,4 +1,4 @@
-<template>
+<template xmlns:div="http://www.w3.org/1999/html">
   <v-row>
     <v-col class="text-center">
       <v-card
@@ -27,6 +27,43 @@
           <v-row no-gutters>
             <v-col sm="12" style="position: relative;">
               <div ref="chatContainer" class="chat-container">
+                <div v-if="messages && messages.length === 0" class="message">
+                  <v-app-bar
+                    color="rgba(0,0,0,0)"
+                    class="mb-16"
+                    flat
+                    max-width="700px"
+                    extended
+                  >
+                    <v-badge
+                      bordered
+                      bottom
+                      color="green"
+                      dot
+                      offset-x="16"
+                      offset-y="9"
+                    >
+                      <v-avatar size="40" elevation="10">
+                        <img
+                          src="~/assets/imgs/avatarBot.png"
+                          alt="Bot1"
+                        >
+                      </v-avatar>
+                    </v-badge>
+                    <v-card class="mt-10 ml-2" max-width="950px">
+                      <v-list-item three-line>
+                        <v-list-item-content>
+                          <div class="mb-4" style="width: 200px">
+                            Ahora usted puede dialogar con Betterme, intente diciendo <b>Hola, ¿Como estás?</b>
+                          </div>
+                          <v-list-item-subtitle>
+                            hoy
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-card>
+                  </v-app-bar>
+                </div>
                 <div v-for="(message, index) in messages" :key="index" class="message" :class="{own: message.user == username}">
                   <div style="margin-top: 5px" />
                   <v-app-bar v-if="message.user !== username" color="rgba(0,0,0,0)" flat class="mb-16" extended>
