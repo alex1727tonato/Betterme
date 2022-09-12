@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="image" style="heigth: 100vh">
-      <v-col class="d-none d-sm-flex justify-center align-center text-center" style="height: 90vh; background: linear-gradient(#245c94, #ba66ca);">
+      <v-col class="d-none d-sm-flex justify-center align-center text-center" style="height: 100vh; background: linear-gradient(#245c94, #ba66ca);">
         <div class="img">
           <img src="~/assets/imgs/logo.png" width="650px">
         </div>

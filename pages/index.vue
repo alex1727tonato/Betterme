@@ -55,7 +55,7 @@
               </v-row>
             </v-card>
           </div>
-          <div>
+          <div v-if="false">
             <v-card
               class="mx-auto"
               color="#ba66ca"
@@ -73,16 +73,36 @@
           </div>
           <v-card-actions>
             <v-btn
-              class="mt-5"
+              class="primary mt-5"
               outlined
+              dark
               rounded
               text
               to="/chat"
             >
-              Chat
+              Ir a Chat
             </v-btn>
           </v-card-actions>
         </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <div class="text-h4 mb-10">
+          Como esta tu estado de ánimo hoy:
+        </div>
+        <div class="text-center">
+          <div class="d-flex flex-row justify-center">
+            <div v-for="(item, index) of data" :key="index">
+              <v-icon
+                :color="item.activo ? item.color : 'grey lighten-1'"
+                :size="'150px'"
+              >
+                {{ item.activo ? `mdi-emoticon-${item.emoticion}` : `mdi-emoticon-${item.emoticion}-outline` }}
+              </v-icon>
+            </div>
+          </div>
+        </div>
       </v-col>
     </v-row>
   </div>
@@ -95,11 +115,33 @@ export default Vue.extend({
   name: 'InicioPage',
   data () {
     return {
+      data: [{
+        color: 'blue darken-2',
+        activo: false,
+        emoticion: 'cry'
+      }, {
+        color: 'blue',
+        activo: false,
+        emoticion: 'sad'
+      }, {
+        color: 'yellow',
+        activo: false,
+        emoticion: 'neutral'
+      }, {
+        color: 'green lighten-1',
+        activo: false,
+        emoticion: 'happy'
+      }, {
+        color: 'green darken-3',
+        activo: false,
+        emoticion: 'excited'
+      }],
+      rating: 0,
       positivo: 0,
       negativo: 0,
       isLoading: false,
       series: [{
-        name: 'Desktops',
+        name: 'Porcentaje',
         data: []
       }],
       chartOptions: {
@@ -149,15 +191,29 @@ export default Vue.extend({
           this.positivo += element.score.positive
           let valor = element.score.total * 100
           valor = valor.toFixed(2)
+          this.rating = Math.round(valor / 20)
           let fecha = element._date
           fecha = fecha.substring(0, 10)
           this.series[0].data.push(valor)
           this.chartOptions.xaxis.categories.push(fecha)
         })
-        // this.series[0].data.push('100')
-        // this.chartOptions.xaxis.categories.push('2')
-        console.log(this.positivo)
-        console.log(this.negativo)
+        switch (this.rating) {
+          case 1 :
+            this.data[0].activo = true
+            break
+          case 2 :
+            this.data[1].activo = true
+            break
+          case 3 :
+            this.data[2].activo = true
+            break
+          case 4 :
+            this.data[3].activo = true
+            break
+          case 5 :
+            this.data[4].activo = true
+            break
+        }
         this.isLoading = true
       } catch (error) {
         console.log(error)

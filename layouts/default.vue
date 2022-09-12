@@ -77,8 +77,18 @@ export default {
         },
         {
           icon: 'mdi-chat-processing-outline',
+          title: 'Bitacora',
+          to: '/recordMe'
+        },
+        {
+          icon: 'mdi-chat-processing-outline',
           title: 'Chat',
           to: '/chat'
+        },
+        {
+          icon: 'mdi-chat-processing-outline',
+          title: 'Acerca de nosotros',
+          to: '/aboutOur'
         }
       ],
       miniVariant: false,
